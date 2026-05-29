@@ -107,7 +107,7 @@ jobs:
     name: Deploy
     needs:
       - docker
-    if: github.ref == 'refs/heads/main'
+    if: false
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Server
