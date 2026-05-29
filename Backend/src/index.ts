@@ -56,7 +56,18 @@ app.use(passport.session());
 app.use(helmet());
 app.use(
   cors({
-    origin: config.cors.origin,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (origin.includes('vercel.app') || origin.includes('netlify.app') || origin.includes('localhost')) {
+        return callback(null, true);
+      }
+      const allowedOrigins = Array.isArray(config.cors.origin) ? config.cors.origin : [config.cors.origin];
+      if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     optionsSuccessStatus: 200,
   })

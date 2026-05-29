@@ -43,9 +43,6 @@ jobs:
   frontend:
     name: Build Frontend
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: FrontEnd
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -97,8 +94,8 @@ jobs:
       - name: Build Frontend Image
         uses: docker/build-push-action@v6
         with:
-          context: ./FrontEnd
-          file: ./FrontEnd/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: true
           tags: |
             docker.io/${{ secrets.DOCKERHUB_USERNAME }}/resume-builder-frontend:latest
