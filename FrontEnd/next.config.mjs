@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: process.env.VERCEL ? undefined : 'standalone',
   distDir: process.env.NEXT_DIST_DIR || '.next',
   typescript: {
     ignoreBuildErrors: true,
