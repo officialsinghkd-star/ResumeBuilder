@@ -8,7 +8,7 @@ FROM base AS deps
 COPY package.json pnpm-lock.yaml ./
 RUN corepack enable \
   && corepack prepare pnpm@10.17.1 --activate \
-  && pnpm install --frozen-lockfile
+  && pnpm install --no-frozen-lockfile
 
 FROM base AS build
 ARG NEXT_PUBLIC_API_URL=/api/v1
