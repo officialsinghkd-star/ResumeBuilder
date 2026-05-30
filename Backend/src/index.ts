@@ -58,7 +58,7 @@ app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
-      if (origin.includes('vercel.app') || origin.includes('netlify.app') || origin.includes('localhost')) {
+      if (origin.includes('vercel.app') || origin.includes('localhost')) {
         return callback(null, true);
       }
       const allowedOrigins = Array.isArray(config.cors.origin) ? config.cors.origin : [config.cors.origin];
