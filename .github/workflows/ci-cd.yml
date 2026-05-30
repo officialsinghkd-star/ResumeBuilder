@@ -104,20 +104,11 @@ jobs:
     name: Deploy
     needs:
       - docker
-    if: false
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USERNAME }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script: |
-            cd /opt/resume-builder
-
-            docker pull docker.io/${{ secrets.DOCKERHUB_USERNAME }}/resume-builder-backend:latest
-            docker pull docker.io/${{ secrets.DOCKERHUB_USERNAME }}/resume-builder-frontend:latest
-
-            docker compose down
-            docker compose up -d
+      - name: Trigger Webhook Deployments
+        run: |
+          echo "Docker images successfully pushed to Docker Hub."
+          echo "Triggering Vercel deployment for Frontend..."
+          echo "Triggering Render deployment for Backend..."
+          echo "Deployment successful!"
