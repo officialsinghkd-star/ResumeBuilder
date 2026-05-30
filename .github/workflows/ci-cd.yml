@@ -16,58 +16,8 @@ env:
   IMAGE_NAME_FRONTEND: resume-builder-frontend
 
 jobs:
-  backend:
-    name: Build Backend
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Backend
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Run Tests
-        run: npm test --if-present
-
-      - name: Build Backend
-        run: npm run build
-
-  frontend:
-    name: Build Frontend
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Install Dependencies
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Build Frontend
-        run: pnpm build
-
-  docker:
-    name: Build Docker Images
-    needs:
-      - backend
-      - frontend
+  build-and-push:
+    name: Build & Push Docker Images
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -101,9 +51,9 @@ jobs:
             docker.io/${{ secrets.DOCKERHUB_USERNAME }}/resume-builder-frontend:latest
 
   deploy:
-    name: Deploy
+    name: Deploy to Production
     needs:
-      - docker
+      - build-and-push
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Webhook Deployments
